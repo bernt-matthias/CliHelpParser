@@ -44,10 +44,11 @@ class WrapperGenerator:
         :param type: The type of converter, e.g. 'cwl' or 'wdl'
         """
         for subclass in cls.__subclasses__():
+            print("%s" % subclass)
             if subclass.format() == typ:
                 return subclass
 
-        raise Exception("Unknown format type")
+        raise Exception("Unknown format type %s" % typ)
 
     @classmethod
     @abstractmethod
