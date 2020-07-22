@@ -43,13 +43,14 @@ class GalaxyGenerator(WrapperGenerator):
             [] if self.ignore_positionals else [*cmd.positional]
         )
         names = self.choose_variable_names(inputs)
-
-        tool = Tool(name = "TODO", 
-                    id = 'TODO',
-                    version = "TODO (version of the Galaxy tool, usually ToolVersion)", 
+        print(dir(cmd))
+        print(cmd.command)
+        tool = Tool(name = cmd.command[0], 
+                    id = cmd.command[0],
+                    version = "0.0.1",
                     description = "TODO", 
-                    executable = "TODO", 
-                    version_command="TODO (a command line to obtain the tool version)")
+                    executable = None, 
+                    version_command="%s %s" % (cmd.command[0], cmd.version_flag.full_name()))
 
         # TODO this could also be done via a macro, which would allow for
         # easier adaptions, e.g. adding other requirements without modifying
@@ -76,9 +77,9 @@ class GalaxyGenerator(WrapperGenerator):
                         help=arg.arg.description)
 
             if isinstance(arg.arg.get_type(), cli_types.CliFile):
-                return "File"
+                pass  # TODO 
             elif isinstance(arg.arg.get_type(), cli_types.CliDir):
-                return "Directory"
+                pass  # TODO
             elif isinstance(arg.arg.get_type(), cli_types.CliString):
                 gxy_param_class = TextParam
             elif isinstance(arg.arg.get_type(), cli_types.CliFloat):
@@ -114,7 +115,7 @@ class GalaxyGenerator(WrapperGenerator):
         # TODO add tests
         tool.tests = Tests()
 
-        tool.help = 'TODO'
+        tool.help = cmd.help_text
 
         return tool
 
@@ -131,4 +132,5 @@ class GalaxyGenerator(WrapperGenerator):
     def validate(cls, wrapper: str, cmd: Command = None, explore=True):
         # Todo add planemo lint call
         # probably calling the functions in this loop: https://github.com/galaxyproject/planemo/blob/2b659c9a7531f9a973e60d6319898e58ef3ea781/planemo/tool_lint.py#L28
+        print("VALIDATE")
         pass
