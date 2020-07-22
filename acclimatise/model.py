@@ -378,26 +378,33 @@ bool_re = re.compile("bool(ean)?", flags=re.IGNORECASE)
 file_re = re.compile("file|path", flags=re.IGNORECASE)
 dir_re = re.compile("folder|directory", flags=re.IGNORECASE)
 
+default_re = re.compile("default(?: value)?(?:[:=] ?| )([^ )\]]+)", flags=re.IGNORECASE)
 
 def infer_type(string) -> typing.Optional[cli_types.CliType]:
     """
     Reads a string (argument description etc) to find hints about what type this argument might be. This is
     generally called by the get_type() methods
     """
-    if bool_re.match(string):
-        return cli_types.CliBoolean()
-    elif float_re.match(string):
-        return cli_types.CliFloat()
-    elif int_re.match(string):
-        return cli_types.CliInteger()
-    elif file_re.match(string):
-        return cli_types.CliFile()
-    elif dir_re.match(string):
-        return cli_types.CliDir()
-    elif str_re.match(string):
-        return cli_types.CliString()
+    default_match = default_re.match()
+    if default_match is not None:
+        default = default_match.group(1)
     else:
-        return cli_types.CliString()
+        default = None
+
+    if bool_re.match(string):
+        return cli_types.CliBoolean(default = default)
+    elif float_re.match(string):
+        return cli_types.CliFloat(default = default)
+    elif int_re.match(string):
+        return cli_types.CliInteger(default = default)
+    elif file_re.match(string):
+        return cli_types.CliFile(default = default)
+    elif dir_re.match(string):
+        return cli_types.CliDir(default = default)
+    elif str_re.match(string):
+        return cli_types.CliString(default = default)
+    else:
+        return cli_types.CliString(default = default)
 
 
 @yaml_object(yaml)

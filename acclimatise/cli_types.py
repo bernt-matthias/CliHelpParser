@@ -13,6 +13,11 @@ class CliType:
     A data type used in the command-line
     """
 
+    default: object = None
+    """
+    A default value, None if unknown
+    """
+
     @property
     def representable(self) -> set:
         """
