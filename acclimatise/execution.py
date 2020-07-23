@@ -52,6 +52,9 @@ def execute_cmd(help_cmd: typing.List[str], timeout: int = 5, **kwargs) -> str:
             )
             process.communicate()
             return ""
+        else:
+            if process.returncode != 0:
+                raise subprocess.CalledProcessError
         finally:
             os.close(master)
             os.close(slave)
