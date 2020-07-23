@@ -13,7 +13,7 @@ class CliType:
     A data type used in the command-line
     """
 
-    default: object = None
+    default: Optional[typing.Any] = None
     """
     A default value, None if unknown
     """
@@ -36,6 +36,11 @@ class CliEnum(CliType):
     One of a list of possible options
     """
 
+    default: Optional[Enum] = None
+    """
+    A default value, None if unknown
+    """
+
     enum: Enum
     """
     The possible options as a Python Enum
@@ -48,13 +53,21 @@ class CliFloat(CliType):
     Takes a floating-point value
     """
 
-    pass
+    default: Optional[float] = None
+    """
+    A default value, None if unknown
+    """
 
 
 @dataclass(unsafe_hash=True)
 class CliInteger(CliType):
     """
     Takes an integer value
+    """
+
+    default: Optional[int] = None
+    """
+    A default value, None if unknown
     """
 
     _representable = {CliFloat}
@@ -66,7 +79,10 @@ class CliString(CliType):
     Takes a string value
     """
 
-    pass
+    default: Optional[str] = None
+    """
+    A default value, None if unknown
+    """
 
 
 @dataclass(unsafe_hash=True)
@@ -75,7 +91,10 @@ class CliBoolean(CliType):
     Takes a boolean value
     """
 
-    pass
+    default: Optional[bool] = None
+    """
+    A default value, None if unknown
+    """
 
 
 @dataclass(unsafe_hash=True)
@@ -84,7 +103,10 @@ class CliDir(CliType):
     Takes a directory path
     """
 
-    pass
+    default: Optional[str] = None
+    """
+    A default value, None if unknown
+    """
 
 
 @dataclass(unsafe_hash=True)
@@ -93,13 +115,21 @@ class CliFile(CliType):
     Takes a file path
     """
 
-    pass
+    default: Optional[str] = None
+    """
+    A default value, None if unknown
+    """
 
 
 @dataclass(unsafe_hash=True)
 class CliDict(CliType):
     """
     Takes a dictionary value
+    """
+
+    default: Optional[str] = None
+    """
+    A default value, None if unknown
     """
 
     key: CliType
@@ -119,6 +149,11 @@ class CliList(CliType):
     Takes a list value
     """
 
+    default: Optional[typing.List[CliType]] = None
+    """
+    A default value, None if unknown
+    """
+
     value: CliType
     """
     Data type of the values in this list
@@ -129,6 +164,12 @@ class CliList(CliType):
 class CliTuple(CliType):
     """
     Takes a list of values with a fixed length, possibly each with different types
+    """
+
+    default: Optional[typing.Tuple[CliType]] = None
+
+    """
+    A default value, None if unknown
     """
 
     values: typing.List[CliType]
