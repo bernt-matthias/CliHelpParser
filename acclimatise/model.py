@@ -371,7 +371,7 @@ class FlagSynonym:
         )
 
 
-int_re = re.compile("(int(eger)?)|size|length|max|min", flags=re.IGNORECASE)
+int_re = re.compile("(int(eger)?)|size|length|max|min|num(ber)?", flags=re.IGNORECASE)
 str_re = re.compile("str(ing)?", flags=re.IGNORECASE)
 float_re = re.compile("float|decimal", flags=re.IGNORECASE)
 bool_re = re.compile("bool(ean)?", flags=re.IGNORECASE)
@@ -379,6 +379,9 @@ file_re = re.compile("file|path", flags=re.IGNORECASE)
 dir_re = re.compile("folder|directory", flags=re.IGNORECASE)
 
 default_re = re.compile("default(?: value)?(?:[:=] ?| )([^ )\]]+)", flags=re.IGNORECASE)
+float_re = re.compile('[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)', flags=re.IGNORECASE)
+int_re = re.compile('[+-]?([0-9]+[^.0-9])', flags=re.IGNORECASE)
+
 
 def infer_type(string) -> typing.Optional[cli_types.CliType]:
     """
@@ -403,6 +406,10 @@ def infer_type(string) -> typing.Optional[cli_types.CliType]:
         return cli_types.CliDir(default = default)
     elif str_re.match(string):
         return cli_types.CliString(default = default)
+    elif float_re.search(string) and not int_re.search(string):
+        return cli_types.CliFloat(default = default)
+    elif not int_re.search(string) and int_re.search(string):
+        return cli_types.CliInteger(default = default)
     else:
         return cli_types.CliString(default = default)
 
