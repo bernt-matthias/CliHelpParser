@@ -378,7 +378,8 @@ bool_re = re.compile("bool(ean)?", flags=re.IGNORECASE)
 file_re = re.compile("file|path", flags=re.IGNORECASE)
 dir_re = re.compile("folder|directory", flags=re.IGNORECASE)
 
-default_re = re.compile("default(?: value)?(?:[:=] ?| )([^ )\]]+)", flags=re.IGNORECASE)
+default_re = re.compile(r"default(?: value)?(?:[:=] ?| )([^ )\]]+)", flags=re.IGNORECASE)
+
 float_re = re.compile('[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)', flags=re.IGNORECASE)
 int_re = re.compile('[+-]?([0-9]+[^.0-9])', flags=re.IGNORECASE)
 
