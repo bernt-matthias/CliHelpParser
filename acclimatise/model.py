@@ -298,14 +298,14 @@ class Flag(CliArgument):
             self.args.get_type(),
             infer_type(self.full_name()),
             infer_type(self.description),
-            cli_types.CliString()
+            cli_types.CliString(),
         ]
         for c in tpe_cand:
             if tpe is None:
                 if c is not None:
                     tpe = c
             else:
-                if issubclass(c, tpe):
+                if isinstance(type(c), type(tpe)):
                     tpe = c
         return tpe
 

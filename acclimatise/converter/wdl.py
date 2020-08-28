@@ -36,7 +36,12 @@ def flag_to_command_input(
     if isinstance(named_flag.arg, model.Flag):
         args.update(dict(optional=named_flag.arg.optional))
         if isinstance(named_flag.arg.args, model.EmptyFlagArg):
-            args.update(dict(true=named_flag.arg.longest_synonym, false=""))
+            args.update(
+                dict(
+                    true=named_flag.arg.longest_synonym,
+                    false=""
+                )
+            )
         else:
             args.update(dict(prefix=named_flag.arg.longest_synonym,))
     elif isinstance(named_flag, model.Positional):
