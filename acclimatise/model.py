@@ -293,15 +293,21 @@ class Flag(CliArgument):
 
     def get_type(self) -> cli_types.CliType:
         # Try the argument name, then the flag name, then the description in that order
-        arg_type = self.args.get_type()
-        if arg_type is not None:
-            return arg_type
-
-        flag_type = infer_type(self.full_name())
-        if flag_type is not None:
-            return flag_type
-
-        return infer_type(self.description) or cli_types.CliString()
+        tpe = None
+        tpe_cand = [
+            self.args.get_type(),
+            infer_type(self.full_name()),
+            infer_type(self.description),
+            cli_types.CliString()
+        ]
+        for c in tpe_cand:
+            if tpe is None:
+                if c is not None:
+                    tpe = c
+            else:
+                if issubclass(c, tpe):
+                    tpe = c
+        return tpe
 
     def full_name(self) -> str:
         """
